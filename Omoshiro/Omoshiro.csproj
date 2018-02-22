@@ -51,9 +51,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\add.ico" />
     <EmbeddedResource Include="Content\icon.ico" />
-    <EmbeddedResource Include="Content\remove.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
