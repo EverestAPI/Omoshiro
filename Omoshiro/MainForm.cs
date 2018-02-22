@@ -187,8 +187,17 @@ namespace Omoshiro {
         }
 
         public void DataSaveAs() {
-            // TODO: Save file dialog.
-            Data.FilePath = "";
+            SaveFileDialog dialog = new SaveFileDialog {
+                FileName = Data.FilePath,
+                Filters = {
+                    new FileDialogFilter("Everest Ghost Mod File (*.oshiro)", ".oshiro")
+                }
+            };
+            DialogResult result = dialog.ShowDialog(this);
+            if (result != DialogResult.Ok) {
+                return;
+            }
+            Data.FilePath = dialog.FileName;
             DataSave();
         }
 
