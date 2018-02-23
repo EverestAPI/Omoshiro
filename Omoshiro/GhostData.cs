@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Omoshiro {
-    public class GhostData {
+    public class GhostData : IEnumerable<object>, INotifyCollectionChanged {
 
         public readonly static string Magic = "everest-ghost\r\n";
         public readonly static char[] MagicChars = Magic.ToCharArray();
@@ -22,6 +25,8 @@ namespace Omoshiro {
 
         public static string GetGhostFileName(string sid, AreaMode mode, string level, string name, DateTime date)
             => GetGhostFilePrefix(sid, mode, level) + PathVerifyRegex.Replace($"{name}-{date.ToString("yyyy-MM-dd-HH-mm-ss-fff", CultureInfo.InvariantCulture)}", "-") + ".oshiro";
+
+        internal MainForm Form;
 
         public string SID;
         public AreaMode Mode;
@@ -37,21 +42,37 @@ namespace Omoshiro {
 
         public string FilePath;
 
-        public List<GhostFrame> Frames = new List<GhostFrame>();
+        public ObservableCollection<object> Frames = new ObservableCollection<object>();
+
+        protected NotifyCollectionChangedEventHandler _CollectionChanged;
+        public event NotifyCollectionChangedEventHandler CollectionChanged {
+            add {
+                Frames.CollectionChanged += value;
+                _CollectionChanged += value;
+            }
+            remove {
+                Frames.CollectionChanged -= value;
+                _CollectionChanged -= value;
+            }
+        }
+        internal void Change(GhostFrame frame) {
+            Form?.RefreshViewFrame(Frames.IndexOf(frame));
+        }
 
         public GhostFrame this[int i] {
             get {
                 if (i < 0 || i >= Frames.Count)
                     return default(GhostFrame);
-                return Frames[i];
+                return (GhostFrame) Frames[i];
             }
         }
 
-        public GhostData() {
+        public GhostData(MainForm form) {
+            Form = form;
             Date = DateTime.UtcNow;
         }
-        public GhostData(string filePath)
-            : this() {
+        public GhostData(MainForm form, string filePath)
+            : this(form) {
             FilePath = filePath;
         }
 
@@ -62,7 +83,8 @@ namespace Omoshiro {
 
             if (!File.Exists(FilePath)) {
                 // File doesn't exist - load nothing.
-                Frames = new List<GhostFrame>();
+                Frames = new ObservableCollection<object>();
+                Frames.CollectionChanged += _CollectionChanged;
                 return null;
             }
 
@@ -113,9 +135,11 @@ namespace Omoshiro {
             int count = reader.ReadInt32();
             reader.ReadChar(); // \r
             reader.ReadChar(); // \n
-            Frames = new List<GhostFrame>(count);
+            Frames = new ObservableCollection<object>();
+            Frames.CollectionChanged += _CollectionChanged;
             for (int i = 0; i < count; i++) {
                 GhostFrame frame = new GhostFrame();
+                frame.Data = this;
                 frame.Read(reader);
                 Frames.Add(frame);
             }
@@ -166,9 +190,19 @@ namespace Omoshiro {
             writer.Write('\r');
             writer.Write('\n');
             for (int i = 0; i < Frames.Count; i++) {
-                GhostFrame frame = Frames[i];
+                GhostFrame frame = this[i];
                 frame.Write(writer);
             }
+        }
+
+        // Omoshiro helpers.
+
+        public IEnumerator<object> GetEnumerator() {
+            return Frames.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return Frames.GetEnumerator();
         }
 
     }

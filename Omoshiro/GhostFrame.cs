@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 namespace Omoshiro {
     public struct GhostFrame {
 
+        // Omoshiro helper.
+        internal GhostData Data;
+
         public void Read(BinaryReader reader) {
             string chunk;
             // The last "chunk" type, \r\n (Windows linebreak), doesn't contain a length.
             while ((chunk = reader.ReadNullTerminatedString()) != "\r\n") {
                 uint length = reader.ReadUInt32();
                 switch (chunk) {
-                    case "data":
-                        ReadChunkData(reader);
-                        break;
                     case "input":
                         ReadChunkInput(reader);
                         break;
@@ -29,8 +29,6 @@ namespace Omoshiro {
         }
 
         public void Write(BinaryWriter writer) {
-            WriteChunkData(writer);
-
             WriteChunkInput(writer);
 
             writer.WriteNullTerminatedString("\r\n");
@@ -47,105 +45,13 @@ namespace Omoshiro {
             long pos = writer.BaseStream.Position;
             long length = pos - start;
 
-            // Update the chunk length, which consists of the 4 bytes before the chunk data.
+            // Update the chunk length, which consists of the 4 bytes before the chunk Data?.
             writer.Flush();
             writer.BaseStream.Seek(start - 4, SeekOrigin.Begin);
             writer.Write((int) length);
 
             writer.Flush();
             writer.BaseStream.Seek(pos, SeekOrigin.Begin);
-        }
-
-        public bool HasData;
-
-        public bool InControl;
-
-        public Vector2 Position;
-        public Vector2 Speed;
-        public float Rotation;
-        public Vector2 Scale;
-        public Color Color;
-
-        public float SpriteRate;
-        public Vector2? SpriteJustify;
-
-        public Facings Facing;
-
-        public string CurrentAnimationID;
-        public int CurrentAnimationFrame;
-
-        public Color HairColor;
-        public bool HairSimulateMotion;
-
-        public void ReadChunkData(BinaryReader reader) {
-            HasData = true;
-
-            InControl = reader.ReadBoolean();
-
-            Position = new Vector2(reader.ReadSingle(), reader.ReadSingle());
-            Speed = new Vector2(reader.ReadSingle(), reader.ReadSingle());
-            Rotation = reader.ReadSingle();
-            Scale = new Vector2(reader.ReadSingle(), reader.ReadSingle());
-            Color = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-
-            SpriteRate = reader.ReadSingle();
-            SpriteJustify = reader.ReadBoolean() ? (Vector2?) new Vector2(reader.ReadSingle(), reader.ReadSingle()) : null;
-
-            Facing = (Facings) reader.ReadInt32();
-
-            CurrentAnimationID = reader.ReadNullTerminatedString();
-            CurrentAnimationFrame = reader.ReadInt32();
-
-            HairColor = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-            HairSimulateMotion = reader.ReadBoolean();
-        }
-
-        public void WriteChunkData(BinaryWriter writer) {
-            if (!HasData)
-                return;
-            long start = WriteChunkStart(writer, "data");
-
-            writer.Write(InControl);
-
-            writer.Write(Position.X);
-            writer.Write(Position.Y);
-
-            writer.Write(Speed.X);
-            writer.Write(Speed.Y);
-
-            writer.Write(Rotation);
-
-            writer.Write(Scale.X);
-            writer.Write(Scale.Y);
-
-            writer.Write(Color.R);
-            writer.Write(Color.G);
-            writer.Write(Color.B);
-            writer.Write(Color.A);
-
-            writer.Write(SpriteRate);
-
-            if (SpriteJustify != null) {
-                writer.Write(true);
-                writer.Write(SpriteJustify.Value.X);
-                writer.Write(SpriteJustify.Value.Y);
-            } else {
-                writer.Write(false);
-            }
-
-            writer.Write((int) Facing);
-
-            writer.WriteNullTerminatedString(CurrentAnimationID);
-            writer.Write(CurrentAnimationFrame);
-
-            writer.Write(HairColor.R);
-            writer.Write(HairColor.G);
-            writer.Write(HairColor.B);
-            writer.Write(HairColor.A);
-
-            writer.Write(HairSimulateMotion);
-
-            WriteChunkEnd(writer, start);
         }
 
         public bool HasInput;
@@ -156,7 +62,67 @@ namespace Omoshiro {
         public Vector2 Aim;
         public Vector2 MountainAim;
 
+        // Omoshiro helpers.
+
+        internal bool? MoveLeft {
+            get {
+                return MoveX < 0;
+            }
+            set {
+                if (value == null)
+                    return;
+                if (value.Value)
+                    MoveX = -1;
+                else
+                    MoveX = 0;
+                Data?.Change(this);
+            }
+        }
+        internal bool? MoveRight {
+            get {
+                return MoveX > 0;
+            }
+            set {
+                if (value == null)
+                    return;
+                if (value.Value)
+                    MoveX = +1;
+                else
+                    MoveX = 0;
+                Data?.Change(this);
+            }
+        }
+        internal bool? MoveUp {
+            get {
+                return MoveY < 0;
+            }
+            set {
+                if (value == null)
+                    return;
+                if (value.Value)
+                    MoveY = -1;
+                else
+                    MoveY = 0;
+                Data?.Change(this);
+            }
+        }
+        internal bool? MoveDown {
+            get {
+                return MoveY > 0;
+            }
+            set {
+                if (value == null)
+                    return;
+                if (value.Value)
+                    MoveY = +1;
+                else
+                    MoveY = 0;
+                Data?.Change(this);
+            }
+        }
+
         public int Buttons;
+
         public bool ESC {
             get {
                 return (Buttons & (int) ButtonMask.ESC) == (int) ButtonMask.ESC;
@@ -165,6 +131,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.ESC;
                 if (value)
                     Buttons |= (int) ButtonMask.ESC;
+                Data?.Change(this);
             }
         }
         public bool Pause {
@@ -175,6 +142,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.Pause;
                 if (value)
                     Buttons |= (int) ButtonMask.Pause;
+                Data?.Change(this);
             }
         }
         public bool MenuLeft {
@@ -185,6 +153,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuLeft;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuLeft;
+                Data?.Change(this);
             }
         }
         public bool MenuRight {
@@ -195,6 +164,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuRight;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuRight;
+                Data?.Change(this);
             }
         }
         public bool MenuUp {
@@ -205,6 +175,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuUp;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuUp;
+                Data?.Change(this);
             }
         }
         public bool MenuDown {
@@ -215,6 +186,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuDown;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuDown;
+                Data?.Change(this);
             }
         }
         public bool MenuConfirm {
@@ -225,6 +197,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuConfirm;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuConfirm;
+                Data?.Change(this);
             }
         }
         public bool MenuCancel {
@@ -235,6 +208,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuCancel;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuCancel;
+                Data?.Change(this);
             }
         }
         public bool MenuJournal {
@@ -245,6 +219,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.MenuJournal;
                 if (value)
                     Buttons |= (int) ButtonMask.MenuJournal;
+                Data?.Change(this);
             }
         }
         public bool QuickRestart {
@@ -255,6 +230,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.QuickRestart;
                 if (value)
                     Buttons |= (int) ButtonMask.QuickRestart;
+                Data?.Change(this);
             }
         }
         public bool Jump {
@@ -265,6 +241,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.Jump;
                 if (value)
                     Buttons |= (int) ButtonMask.Jump;
+                Data?.Change(this);
             }
         }
         public bool Dash {
@@ -275,6 +252,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.Dash;
                 if (value)
                     Buttons |= (int) ButtonMask.Dash;
+                Data?.Change(this);
             }
         }
         public bool Grab {
@@ -285,6 +263,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.Grab;
                 if (value)
                     Buttons |= (int) ButtonMask.Grab;
+                Data?.Change(this);
             }
         }
         public bool Talk {
@@ -295,6 +274,7 @@ namespace Omoshiro {
                 Buttons &= (int) ~ButtonMask.Talk;
                 if (value)
                     Buttons |= (int) ButtonMask.Talk;
+                Data?.Change(this);
             }
         }
 

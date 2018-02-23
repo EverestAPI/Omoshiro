@@ -92,132 +92,135 @@ namespace Omoshiro {
                             },
                 },
             });
-            root.Add(new Scrollable {
-                Content = (gridViewFrames = new GridView {
-                    ShowHeader = true,
-                    GridLines = GridLines.Both,
-                    AllowColumnReordering = false,
-                    AllowMultipleSelection = true,
-                    Columns = {
-                        new GridColumn {
-                            HeaderText = "X",
-                            Width = 32,
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new TextBoxCell(nameof(GhostFrame.MoveX)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Y",
-                            Width = 32,
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new TextBoxCell(nameof(GhostFrame.MoveY)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Aim",
-                            Width = 128,
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new TextBoxCell(nameof(GhostFrame.Aim)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Mountain Aim",
-                            Width = 128,
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new TextBoxCell(nameof(GhostFrame.MountainAim)),
-                        },
-                        new GridColumn {
-                            HeaderText = "ESC",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.ESC)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Pause",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.Pause)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Quick Restart",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.QuickRestart)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Jump",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.Jump)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Dash",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.Dash)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Grab",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.Grab)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Talk",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
-                        },
-                        new GridColumn {
-                            HeaderText = "Menu",
-                            Editable = false,
-                            Sortable = false,
-                        },
-                        new GridColumn {
-                            HeaderText = "←",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuLeft)),
-                        },
-                        new GridColumn {
-                            HeaderText = "→",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuRight)),
-                        },
-                        new GridColumn {
-                            HeaderText = "↑",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuUp)),
-                        },
-                        new GridColumn {
-                            HeaderText = "↓",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuDown)),
-                        },
-                        new GridColumn {
-                            HeaderText = "✓",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuConfirm)),
-                        },
-                        new GridColumn {
-                            HeaderText = "❌",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuCancel)),
-                        },
-                        new GridColumn {
-                            HeaderText = "📖",
-                            Editable = true,
-                            Sortable = false,
-                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuJournal)),
-                        },
-                    }
-                })
+            root.Add(gridViewFrames = new GridView {
+                ShowHeader = true,
+                GridLines = GridLines.Both,
+                AllowColumnReordering = false,
+                AllowMultipleSelection = true,
+                Columns = {
+                    new GridColumn {
+                        HeaderText = "←",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MoveLeft) },
+                    },
+                    new GridColumn {
+                        HeaderText = "M←",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuLeft)),
+                    },
+                    new GridColumn {
+                        HeaderText = "→",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MoveRight) },
+                    },
+                    new GridColumn {
+                        HeaderText = "M→",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuRight)),
+                    },
+                    new GridColumn {
+                        HeaderText = "↑",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MoveUp) },
+                    },
+                    new GridColumn {
+                        HeaderText = "M↑",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuUp)),
+                    },
+                    new GridColumn {
+                        HeaderText = "↓",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MoveDown) },
+                    },
+                    new GridColumn {
+                        HeaderText = "M↓",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuDown)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Jump",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Jump)),
+                    },
+                    new GridColumn {
+                        HeaderText = "M✓",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuConfirm)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Dash",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Dash)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Talk",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
+                    },
+                    new GridColumn {
+                        HeaderText = "M❌",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuCancel)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Grab",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Grab)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Aim",
+                        Width = 128,
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new TextBoxCell(nameof(GhostFrame.Aim)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Mountain Aim",
+                        Width = 128,
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new TextBoxCell(nameof(GhostFrame.MountainAim)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Pause",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Pause)),
+                    },
+                    new GridColumn {
+                        HeaderText = "ESC",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.ESC)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Restart",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.QuickRestart)),
+                    },
+                    new GridColumn {
+                        HeaderText = "M📖",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuJournal)),
+                    },
+                }
             });
 
             textBoxSID.TextChanged += (sender, e) => Ghost.SID = textBoxSID.Text;
@@ -270,7 +273,7 @@ namespace Omoshiro {
                     index = selected;
                     break;
                 }
-                Ghost.Frames.Insert(index, new GhostFrame { HasInput = true });
+                Ghost.Frames.Insert(index, new GhostFrame { Data = Ghost, HasInput = true });
                 RefreshViewFrames();
             };
             Command cmdFrameRemove = new Command { ToolBarText = " - ", ToolTip = "Remove selection (Delete)", Shortcut = Keys.Delete };
@@ -300,8 +303,8 @@ namespace Omoshiro {
             };
 
         public void DataNew() {
-            Ghost = new GhostData();
-            Ghost.Frames.Add(new GhostFrame { HasInput = true });
+            Ghost = new GhostData(this);
+            Ghost.Frames.Add(new GhostFrame { Data = Ghost, HasInput = true });
             RefreshView();
         }
 
@@ -315,7 +318,7 @@ namespace Omoshiro {
             if (result != DialogResult.Ok) {
                 return;
             }
-            GhostData data = new GhostData(dialog.FileName).Read();
+            GhostData data = new GhostData(this, dialog.FileName).Read();
             if (data == null) {
                 MessageBox.Show(this, "The selected .oshiro file is not compatible with Omoshiro.", "Unsupported / invalid .oshiro", MessageBoxType.Error);
                 return;
@@ -366,12 +369,11 @@ namespace Omoshiro {
         }
 
         public void RefreshViewFrames() {
-            List<object> data = new List<object>();
-            for (int i = 0; i < Ghost.Frames.Count; i++) {
-                GhostFrame frame = Ghost[i];
-                data.Add(frame);
-            }
-            gridViewFrames.DataStore = data;
+            gridViewFrames.DataStore = Ghost.Frames;
+        }
+
+        public void RefreshViewFrame(int index) {
+            // gridViewFrames.ReloadData(index);
         }
 
     }

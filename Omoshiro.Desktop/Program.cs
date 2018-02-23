@@ -6,7 +6,8 @@ namespace Omoshiro.Desktop {
     public class Program {
         [STAThread]
         public static void Main(string[] args) {
-            new Application(Platform.Detect).Run(new MainForm());
+            Platform platform = Platform.Detect;
+            new Application(platform).Run(new MainForm());
         }
     }
 }
