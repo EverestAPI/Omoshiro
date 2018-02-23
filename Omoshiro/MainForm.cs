@@ -30,7 +30,7 @@ namespace Omoshiro {
 
         public MainForm() {
             Title = "Omoshiro";
-            ClientSize = new Size(1090, 500);
+            ClientSize = new Size(1200, 500);
 
             Icon = Icon.FromResource("Omoshiro.Content.icon.ico");
 
@@ -100,57 +100,74 @@ namespace Omoshiro {
                     AllowMultipleSelection = true,
                     Columns = {
                         new GridColumn {
-                            HeaderText = "#",
-                            Editable = false
+                            HeaderText = "X",
+                            Width = 32,
+                            Editable = true,
+                            Sortable = false,
+                            DataCell = new TextBoxCell(nameof(GhostFrame.MoveX)),
                         },
                         new GridColumn {
-                            HeaderText = "Data?",
-                            Editable = false,
+                            HeaderText = "Y",
+                            Width = 32,
+                            Editable = true,
                             Sortable = false,
-                        },
-                        new GridColumn {
-                            HeaderText = "↔",
-                            Sortable = false,
-                        },
-                        new GridColumn {
-                            HeaderText = "↕",
-                            Sortable = false,
+                            DataCell = new TextBoxCell(nameof(GhostFrame.MoveY)),
                         },
                         new GridColumn {
                             HeaderText = "Aim",
+                            Width = 128,
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new TextBoxCell(nameof(GhostFrame.Aim)),
                         },
                         new GridColumn {
                             HeaderText = "Mountain Aim",
+                            Width = 128,
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new TextBoxCell(nameof(GhostFrame.MountainAim)),
                         },
                         new GridColumn {
                             HeaderText = "ESC",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.ESC)),
                         },
                         new GridColumn {
                             HeaderText = "Pause",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.Pause)),
                         },
                         new GridColumn {
                             HeaderText = "Quick Restart",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.QuickRestart)),
                         },
                         new GridColumn {
                             HeaderText = "Jump",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.Jump)),
                         },
                         new GridColumn {
                             HeaderText = "Dash",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.Dash)),
                         },
                         new GridColumn {
                             HeaderText = "Grab",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.Grab)),
                         },
                         new GridColumn {
                             HeaderText = "Talk",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
                         },
                         new GridColumn {
                             HeaderText = "Menu",
@@ -159,31 +176,45 @@ namespace Omoshiro {
                         },
                         new GridColumn {
                             HeaderText = "←",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuLeft)),
                         },
                         new GridColumn {
                             HeaderText = "→",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuRight)),
                         },
                         new GridColumn {
                             HeaderText = "↑",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuUp)),
                         },
                         new GridColumn {
                             HeaderText = "↓",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuDown)),
                         },
                         new GridColumn {
                             HeaderText = "✓",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuConfirm)),
                         },
                         new GridColumn {
                             HeaderText = "❌",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuCancel)),
                         },
                         new GridColumn {
                             HeaderText = "📖",
+                            Editable = true,
                             Sortable = false,
+                            DataCell = new CheckBoxCell(nameof(GhostFrame.MenuJournal)),
                         },
                     }
                 })
