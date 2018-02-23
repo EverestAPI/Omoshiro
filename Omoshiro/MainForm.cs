@@ -165,16 +165,16 @@ namespace Omoshiro {
                         DataCell = new CheckBoxCell(nameof(GhostFrame.Dash)),
                     },
                     new GridColumn {
-                        HeaderText = "Talk",
-                        Editable = true,
-                        Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
-                    },
-                    new GridColumn {
                         HeaderText = "M❌",
                         Editable = true,
                         Sortable = false,
                         DataCell = new CheckBoxCell(nameof(GhostFrame.MenuCancel)),
+                    },
+                    new GridColumn {
+                        HeaderText = "Talk",
+                        Editable = true,
+                        Sortable = false,
+                        DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
                     },
                     new GridColumn {
                         HeaderText = "Grab",
