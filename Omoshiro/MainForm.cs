@@ -30,7 +30,7 @@ namespace Omoshiro {
 
         public MainForm() {
             Title = "Omoshiro";
-            ClientSize = new Size(1200, 500);
+            ClientSize = new Size(1250, 500);
 
             Icon = Icon.FromResource("Omoshiro.Content.icon.ico");
 
@@ -99,6 +99,12 @@ namespace Omoshiro {
                 AllowMultipleSelection = true,
                 Columns = {
                     new GridColumn {
+                        HeaderText = "#",
+                        Editable = false,
+                        Sortable = false,
+                        DataCell = new TextBoxCell { Binding = Binding.Property<GhostFrame, string>(f => f.IndexString) },
+                    },
+                    new GridColumn {
                         HeaderText = "←",
                         Editable = true,
                         Sortable = false,
@@ -108,7 +114,7 @@ namespace Omoshiro {
                         HeaderText = "M←",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuLeft)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuLeft) },
                     },
                     new GridColumn {
                         HeaderText = "→",
@@ -120,7 +126,7 @@ namespace Omoshiro {
                         HeaderText = "M→",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuRight)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuRight) },
                     },
                     new GridColumn {
                         HeaderText = "↑",
@@ -132,7 +138,7 @@ namespace Omoshiro {
                         HeaderText = "M↑",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuUp)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuUp) },
                     },
                     new GridColumn {
                         HeaderText = "↓",
@@ -144,81 +150,81 @@ namespace Omoshiro {
                         HeaderText = "M↓",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuDown)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuDown) },
                     },
                     new GridColumn {
-                        HeaderText = "Jump",
+                        HeaderText = "JMP",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Jump)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.Jump) },
                     },
                     new GridColumn {
                         HeaderText = "M✓",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuConfirm)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuConfirm) },
                     },
                     new GridColumn {
-                        HeaderText = "Dash",
+                        HeaderText = "DSH",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Dash)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.Dash) },
                     },
                     new GridColumn {
                         HeaderText = "M❌",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuCancel)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuCancel) },
                     },
                     new GridColumn {
-                        HeaderText = "Talk",
+                        HeaderText = "TLK",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Talk)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.Talk) },
                     },
                     new GridColumn {
-                        HeaderText = "Grab",
+                        HeaderText = "GRB",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Grab)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.Grab) },
                     },
                     new GridColumn {
-                        HeaderText = "Aim",
+                        HeaderText = "AIM",
                         Width = 128,
                         Editable = true,
                         Sortable = false,
-                        DataCell = new TextBoxCell(nameof(GhostFrame.Aim)),
+                        DataCell = new TextBoxCell { Binding = Binding.Property<GhostFrame, string>(f => f.AimString) },
                     },
                     new GridColumn {
-                        HeaderText = "Mountain Aim",
+                        HeaderText = "MOUNTAIN AIM",
                         Width = 128,
                         Editable = true,
                         Sortable = false,
-                        DataCell = new TextBoxCell(nameof(GhostFrame.MountainAim)),
+                        DataCell = new TextBoxCell { Binding = Binding.Property<GhostFrame, string>(f => f.MountainAimString) },
                     },
                     new GridColumn {
-                        HeaderText = "Pause",
+                        HeaderText = "PAUSE",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.Pause)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.Pause) },
                     },
                     new GridColumn {
                         HeaderText = "ESC",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.ESC)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.ESC) },
                     },
                     new GridColumn {
-                        HeaderText = "Restart",
+                        HeaderText = "RESET",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.QuickRestart)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.QuickRestart) },
                     },
                     new GridColumn {
                         HeaderText = "M📖",
                         Editable = true,
                         Sortable = false,
-                        DataCell = new CheckBoxCell(nameof(GhostFrame.MenuJournal)),
+                        DataCell = new CheckBoxCell { Binding = Binding.Property<GhostFrame, bool?>(f => f.MenuJournal) },
                     },
                 }
             });
@@ -267,7 +273,6 @@ namespace Omoshiro {
 
             Command cmdFrameAdd = new Command { ToolBarText = " + ", ToolTip = "Add frame (Insert)", Shortcut = Keys.Insert };
             cmdFrameAdd.Executed += (sender, e) => {
-                // TODO: Take selected index into account.
                 int index = Ghost.Frames.Count;
                 foreach (int selected in gridViewFrames.SelectedRows) {
                     index = selected;
@@ -279,6 +284,8 @@ namespace Omoshiro {
             Command cmdFrameRemove = new Command { ToolBarText = " - ", ToolTip = "Remove selection (Delete)", Shortcut = Keys.Delete };
             Command cmdFrameMoveUp = new Command { ToolBarText = " ↑ ", ToolTip = "Move selection up (Shift + Up)", Shortcut = Keys.Shift | Keys.Up };
             Command cmdFrameMoveDown = new Command { ToolBarText = " ↓ ", ToolTip = "Move selection down (Shift + Down)", Shortcut = Keys.Shift | Keys.Down };
+
+            // TODO: Commands.
 
             ToolBar = new ToolBar { Items = {
                     cmdFrameAdd,

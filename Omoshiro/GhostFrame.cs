@@ -6,10 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Omoshiro {
-    public struct GhostFrame {
+    public class GhostFrame {
 
-        // Omoshiro helper.
+        // Omoshiro helpers.
         internal GhostData Data;
+
+        internal string IndexString {
+            get {
+                return Data?.Frames?.IndexOf(this).ToString("000000") ?? "------";
+            }
+            set {
+
+            }
+        }
 
         public void Read(BinaryReader reader) {
             string chunk;
@@ -118,6 +127,24 @@ namespace Omoshiro {
                 else
                     MoveY = 0;
                 Data?.Change(this);
+            }
+        }
+
+        internal string AimString {
+            get {
+                return Aim.ToString();
+            }
+            set {
+                Aim.Parse(value);
+            }
+        }
+
+        internal string MountainAimString {
+            get {
+                return MountainAim.ToString();
+            }
+            set {
+                MountainAim.Parse(value);
             }
         }
 
